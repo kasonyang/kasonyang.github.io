@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+
+    <title>Netlib</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Netlib</h1>
+        <h2></h2>
+
+        <section id="downloads">
+          <a href="https://github.com/kasonyang/netlib" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>Overview</h1><p>Netlib is a async socket framework library for java.</p><h1>Installation</h1><p>gradle:</p>
+<pre><code>compile &#39;site.kason:netlib:VERSION&#39;
+</code></pre><h1>Usage</h1><h2>Connect as a client</h2>
+<pre><code>ChannelHost host = ChannelHost.create();
+Channel client = host.createChannel();
+client.connect(new InetSocketAddress(&quot;localhost&quot;,80));
+host.listen();
+</code></pre><h2>Listen as a server</h2>
+<pre><code>ChannelHost host = ChannelHost.create();
+host.createServerChannel(new InetSocketAddress(&quot;localhost&quot;,80), new AcceptHandler() {
+  @Override
+  public void accepted(Channel ch) {
+    //TODO add you code here
+  }
+});
+host.listen();
+</code></pre><h2>Transfer data</h2><h3>write</h3>
+<pre><code>byte[] data = &quot;Hello,world!&quot;.getBytes();
+WriteTask task = new ByteWriteTask(data);
+channel.write(task);
+</code></pre><h3>read</h3>
+<pre><code>channel.read(new ReadTask() {
+
+  @Override
+  public boolean handleRead(Channel channel,IOBuffer buffer) {
+    int len = buffer.getReadableSize();
+    log(&quot;client:read &quot; + len + &quot; bytes&quot;);
+    byte[] receivedData = new byte[len];
+    buffer.poll(receivedData);
+    //process receivedData
+    return true;//return true if the task is finished
+  }
+
+});
+</code></pre><h2>Enable SSL</h2>
+<pre><code>boolean clientMode = true;
+String keyStore = &quot;sslclientkeys&quot;;
+String pwd = &quot;net-lib&quot;;
+SSLContext context = SSLContextFactory.create(keyStore, pwd);
+SSLCodec sslCodec = new SSLCodec(ch,context, clientMode);
+channel.addCodec(sslCodec);
+</code></pre><h2>Handle exceptions</h2>
+<pre><code>ExceptionHandler handler = new ExceptionHandler() {
+  @Override
+  public void handleException(Channel ch, Exception ex) {
+    ex.printStack();
+    ch.close();
+  }
+};
+client.setExceptionHandler(handler);
+</code></pre>
+      </section>
+    </div>
+
+    <footer>
+      <div class="container">
+        Copyright©2017 <a href="https://github.com/kasonyang">Kason Yang</a>
+      </div>
+    </footer>
+
+  </body>
+</html>
