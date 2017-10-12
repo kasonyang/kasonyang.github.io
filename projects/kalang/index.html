@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+
+    <title>Kalang</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Kalang</h1>
+        <h2></h2>
+
+        <section id="downloads">
+          <a href="https://github.com/kasonyang/kalang" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>Overview</h1><p>Kalang is a static type-safe and null-safe language base on jvm with flexible syntax.</p><h1>Features</h1>
+<ul>
+  <li>static type-safe</li>
+  <li>null safe</li>
+  <li>auto type</li>
+  <li>flexible syntax</li>
+  <li>compatible with other jvm-based language like java,groovy and so on.</li>
+</ul><h1>How to build and install</h1><p>requirements: </p>
+<ul>
+  <li>jdk8</li>
+  <li>gradle</li>
+</ul><p>clone the source,and run</p>
+<pre><code>&gt;gradlew installDist
+</code></pre><p>add the path<code>build/install/kalang/bin</code> to your <code>PATH</code> environment variable</p><h1>Usage</h1><h2>run as an editor</h2>
+<pre><code>&gt; kalang -gui
+</code></pre><p><img src="https://github.com/kasonyang/kalang/blob/master/snapshot/kalang-editor.png?raw=true" alt="Kalang Editor""/></p><h2>run as a compiler</h2>
+<pre><code>&gt; kalang SOURCE_FILE 
+</code></pre><p>For example:<code>kalang Helloworld.kl</code> would compile <code>Helloworld.kl</code> in current directory.</p><p>More usages please run</p>
+<pre><code>&gt; kalang -h
+</code></pre><h1>HelloWorld Example</h1>
+<pre><code>var s = &quot;Hello,world!&quot;;
+println(s);
+</code></pre><p>More examples could be found in <a href="https://github.com/kasonyang/kalang/tree/master/examples">examples</a> directory.</p><h1>IDE plugin support</h1>
+<ul>
+  <li><a href="https://github.com/kasonyang/kalang-nb-support">kalang-nb-support</a></li>
+</ul><h1>Base Syntax</h1><h2>Package and class name</h2><p>You don't have to declare package name and class name in the code.Kalang use the directory name as package name and the file name as class name.For example,the file <code>/src/foo/bar/Helloworld.kl</code> means that the package name is <code>foo.bar</code> , the main class name is <code>Helloworld</code> and the full class name is <code>foo.bar.Helloworld</code>,if the source root is <code>/src</code>.</p><h2>Import classes</h2>
+<pre><code>import foo.bar.Helloworld;//normal import
+import foo.bar.HelloKalang as KL;//use alias
+import foo.bar.*;
+</code></pre><h2>Declare class</h2><p>define a normal class:</p>
+<pre><code>//define a class,default modifier is public
+class{
+    //declare fields and methods
+}
+</code></pre><p>define a generic class:</p>
+<pre><code>class&lt;T&gt;{
+    //...
+}
+</code></pre><p>extend and implement:</p>
+<pre><code>class extends Object implements List&lt;String&gt;{
+    //...
+}
+</code></pre><p>write as a script:</p>
+<pre><code>//declare methods or code statements
+System.out.print(&quot;Hello,world&quot;);
+</code></pre><h2>Declare method</h2>
+<pre><code>int sum(int a,int b){
+    return a+b;
+}
+</code></pre><h2>Declare variable</h2>
+<pre><code>int a;
+int b=2;
+var c = 3;//type is inferred,here the type of c is int
+var d = String.format(&quot;%d&quot;,4);//type is String
+</code></pre><h2>Interpolation</h2>
+<pre><code>var name = &quot;kalang&quot;;
+println( &quot;hello,${name}!&quot; );//output:hello,kalang!
+</code></pre><h2>Loop</h2><p>for loop:</p>
+<pre><code>for(int i=0;i&lt;9;i++){
+    //do Some Thing
+}
+</code></pre><p>foreach loop</p>
+<pre><code>foreach([1,2,3] as i,v){
+    println(&quot;index:&quot; + i + &quot;,value:&quot;+v);
+}
+</code></pre><p>loop invoke</p>
+<pre><code>var arr = [&quot;a&quot;,&quot;ab&quot;,&quot;abc&quot;];
+var lens = arr*.length();//lens will be [1,2,3]
+</code></pre><p>while loop:</p>
+<pre><code>while(expression){
+    //do Some Thing
+}
+</code></pre><p>do loop:</p>
+<pre><code>do{
+//do some thing
+}while(expression);
+</code></pre><h2>Comments</h2>
+<pre><code>//line comment
+
+/*
+multi-line comment
+*/
+
+</code></pre><h2>Declare array</h2>
+<pre><code>int[] arr = new int[10];//length is 10
+int[] arr2 = new int[]{1,2,3};arr2 is initialized and it&#39;s length is 3
+</code></pre><p>or</p>
+<pre><code>var intArray = [1,2,3];//int[]
+var integerArray= &lt;Integer&gt;[1,2,3];//Integer[]
+var stringArray = [&quot;hello&quot;,&quot;world&quot;];//String[]
+</code></pre><h2>Declare map</h2>
+<pre><code>var objectMap = [name:&quot;kalang&quot;,year:2016];//Map&lt;Object,Object&gt;
+var stringMap = &lt;String,String&gt;[name:&quot;kalang&quot;,type:&quot;language&quot;];//Map&lt;String,String&gt;
+var ov = objectMap.get(&quot;name&quot;);//ov is Object type
+var sv = stringMap.get(&quot;name&quot;);sv is String type
+</code></pre><h2>Null safe</h2>
+<pre><code>void hello(String? name){
+    name.length();//compile error:name may be null
+    if(name!=null){
+        name.length();//compile passed:name is null checked
+    }
+}
+</code></pre><h2>Cast type automatically</h2>
+<pre><code>Object s = &quot;hello&quot;;
+if(s instanceof String){
+    s.chars();//the type of s is changed from Object to String automatically
+}
+</code></pre>
+      </section>
+    </div>
+
+    <footer>
+      <div class="container">
+        Copyright©2017 <a href="https://github.com/kasonyang">Kason Yang</a>
+      </div>
+    </footer>
+
+  </body>
+</html>
