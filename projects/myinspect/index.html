@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+
+    <title>Myinspect</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Myinspect</h1>
+        <h2></h2>
+
+        <section id="downloads">
+          <a href="https://github.com/kasonyang/myinspect" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>Overview</h1><p>Myinspect is a sql inspector for projects using mybatis.</p><h1>Usage</h1><p>NOTE:The inspector only works in projects building with gradle.</p><p>1.add the follow code to your <code>gradle.build</code> file:</p>
+<pre><code>//specify your database driver class
+System.setProperty(&quot;myinspect.db.driver&quot;,&quot;com.mysql.cj.jdbc.Driver&quot;);
+//specify your database configuration file.only support properties file.
+System.setProperty(&quot;myinspect.db.config.file&quot;,&quot;src/main/resources/application.properties&quot;)
+//specify your keys for url,user and password in your configuration file
+System.setProperty(&quot;myinspect.db.config.url-key&quot;,&quot;datasource.url&quot;)
+System.setProperty(&quot;myinspect.db.config.user-key&quot;,&quot;datasource.user&quot;)
+System.setProperty(&quot;myinspect.db.config.password-key&quot;,&quot;datasource.password&quot;)
+//add myinspect dependency
+dependencies{
+  compileOnly &#39;site.kason:myinspect:VERSION&#39;
+}
+</code></pre><p>2.The inspector runs when you execute <code>gradle build</code> or any tasks which depends on task<code>compileJava</code>.</p><h2>output example</h2>
+<pre><code>&gt; Task :jsm-business:compileJava
+myinspect:Using inspect Analyzers:[SyntaxAnalyzer]
+
+ERROR:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#39;where  `out_trade`.`id`  =  0&#39; at line 1
+at jsm.mapper.base.DefaultDeleteOutTradeTrait::deleteById(long)
+ delete `out_trade`  where  `out_trade`.`id`  =  0
+
+ERROR:Table &#39;jsm.Admin&#39; doesn&#39;t exist
+at jsm.mapper.base.DefaultUpdateAdminTrait::update(jsm.entity.Admin)
+update Admin set  `name`=0  ,  `password`=0    where id=0
+
+WARNING:delete/update table without where condition
+at app.mapper.AnnounceMapper::delete()
+delete from `Announce`
+...
+...
+myinspect:112 sql inspected. 20 diagnosis provided.
+</code></pre>
+      </section>
+    </div>
+
+    <footer>
+      <div class="container">
+        Copyright©2017 <a href="https://github.com/kasonyang">Kason Yang</a>
+      </div>
+    </footer>
+
+  </body>
+</html>
