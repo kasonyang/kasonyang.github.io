@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+
+    <title>Tempera document</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Tempera document</h1>
+        <h2></h2>
+
+        <section id="downloads">
+          <a href="https://github.com/kasonyang/tempera" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>Installation</h1><p>gradle</p>
+<pre><code>compile &#39;site.kason:tempera:VERSION&#39;
+</code></pre><h1>Get started</h1>
+<pre><code>Engine engine = new Engine();
+Template tpl = engine.compileInline(&quot;{{var name:String}}hello,{{name}}!&quot;, &quot;hello.template&quot;, null);
+String result = tpl.render(Collections.singletonMap(&quot;name&quot;, &quot;world&quot;));
+assertEquals(&quot;hello,world!&quot;, result);
+</code></pre><h1>Declaring variables</h1><p>Variables should be declared at the beginning of template.</p>
+<pre><code>{{var name:String}}
+{{var user:User}}
+</code></pre><h1>Output variable</h1>
+<pre><code>Hello,my name is {{name}}.
+Hello,my name is {{user.name}}.
+</code></pre><p>The variable<code>{{user.name}}</code> will attempt the following techniques to access the<code>name</code> attribute of the <code>user</code> variable:</p>
+<ul>
+  <li>user.name</li>
+  <li>user.getName()</li>
+  <li>user.isName()</li>
+</ul><h1>Operators</h1>
+<pre><code>== , != , &lt; , &gt; , &lt;= , &gt;=
+&amp;&amp; , || , !
++  , -  , * , / , %
+?: 
+</code></pre><h1>Control structures</h1><h2>If</h2>
+<pre><code>{{if EXPR}}
+...
+{{else}}
+...
+{{/if}}
+</code></pre><h2>For</h2>
+<pre><code>{{for i in list}}
+...
+{{/for}}
+</code></pre><p>or</p>
+<pre><code>{{for i,ctx in list}}
+...
+index:{{ctx.index}}
+isFirst:{{ctx.isFirst}}
+isLast:{{ctx.isLast}}
+...
+{{/for}}
+</code></pre><h1>Inheritance</h1><p>Template <code>parent</code>:</p>
+<pre><code>&lt;html&gt;
+&lt;body&gt;
+{{placeholder body}}Here is the default content of body.{{/placeholder}}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>Template <code>child</code>:</p>
+<pre><code>{{layout parent}}
+{{replace body}}Here is the new content of body.{{/body}}
+{{/layout}}
+</code></pre><p>The output of <code>child</code> will be(refomatted):</p>
+<pre><code>&lt;html&gt;
+&lt;body&gt;
+Here is the new content of body.
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h1>Comments</h1>
+<pre><code>{{* 
+Here is comment.
+The content would be ignored.
+ *}}
+</code></pre><h1>Filters</h1>
+<pre><code>{{name|upper}}
+</code></pre><h1>Functions</h1>
+<pre><code>{{length(name)}}
+</code></pre><h1>Miscellaneous</h1><p>The class of context variable in for statement:</p>
+<pre><code>class IterateContext{
+  isFirst()
+  isLast()
+  getIndex()
+  hasNext()
+  next()
+}
+</code></pre>
+      </section>
+    </div>
+
+    <footer>
+      <div class="container">
+        Copyright©2017 <a href="https://github.com/kasonyang">Kason Yang</a>
+      </div>
+    </footer>
+
+  </body>
+</html>
