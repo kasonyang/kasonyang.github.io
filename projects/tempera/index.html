@@ -25,13 +25,22 @@
 
     <div class="container">
       <section id="main_content">
-        <h1>Overview</h1><p>Tempera is a high-performance and type-safe template engine. </p><h1>Performance</h1><p><img src="https://github.com/kasonyang/template-benchmark/raw/master/results.png" alt="performance""/></p><h1>Installation</h1><p>gradle</p>
+        <h1>Overview</h1><p>Tempera is a high-performance and type-safe template engine for java. </p><h1>Performance</h1><p>The performance test could be found here:<a href="https://github.com/kasonyang/template-benchmark">https://github.com/kasonyang/template-benchmark</a></p><p><img src="https://github.com/kasonyang/template-benchmark/raw/master/results.png" alt="performance""/></p><h1>Installation</h1><p><img src="https://img.shields.io/maven-central/v/site.kason/tempera.svg" alt="Maven Central""/></p><p>gradle</p>
 <pre><code>compile &#39;site.kason:tempera:VERSION&#39;
-</code></pre><h1>Get started</h1>
+</code></pre><h1>Get started</h1><p>compile template from string:</p>
 <pre><code>Engine engine = new Engine();
 Template tpl = engine.compileInline(&quot;{{var name:String}}hello,{{name}}!&quot;, &quot;hello.template&quot;, null);
 String result = tpl.render(Collections.singletonMap(&quot;name&quot;, &quot;world&quot;));
 assertEquals(&quot;hello,world!&quot;, result);
+</code></pre><p>compile template from resource:</p>
+<pre><code>Engine engine = new Engine();
+Template tpl = engine.compile(&quot;templates.main&quot;);//compile template from resource:/templates/main.tplx
+tpl.render(Collections.singletonMap(&quot;names&quot;, list),new StringWriter());
+</code></pre><p>compile template from file system:</p>
+<pre><code>Configuration conf = new Configuration(Configuration.DEFAULT);
+conf.setTemplateLoader(new FileTemplateLoader(&quot;.&quot;));
+Template tpl = engine.compile(&quot;templates.main&quot;);//compile template from file: ./templates/main.tplx
+tpl.render(Collections.singletonMap(&quot;names&quot;, list),new StringWriter());
 </code></pre><h1>Declaring variables</h1><p>Variables should be declared at the beginning of template.</p>
 <pre><code>{{var name:String}}
 {{var user:User}}
@@ -87,10 +96,19 @@ Here is the new content of body.
 Here is comment.
 The content would be ignored.
  *}}
-</code></pre><h1>Filters</h1>
+</code></pre><h1>Filters</h1><p>Using filters in template:</p>
 <pre><code>{{name|upper}}
-</code></pre><h1>Functions</h1>
+</code></pre><p>Specify the default filter:</p>
+<pre><code>Configuration conf = new Configuration(Configuration.DEFAULT);
+conf.setDefaultFilter(&quot;html&quot;);
+</code></pre><p>Register custom filters:</p>
+<pre><code>Configuration conf = new Configuration(Configuration.DEFAULT);
+conf.registerFilter(&quot;html&quot;, new HtmlFilter());
+</code></pre><h1>Functions</h1><p>Using functions in template:</p>
 <pre><code>{{length(name)}}
+</code></pre><p>Register custom functions:</p>
+<pre><code>Configuration conf = new Configuration(Configuration.DEFAULT);
+conf.registerFunction(&quot;XXX&quot;, new XXXFunction());
 </code></pre><h1>Miscellaneous</h1><p>The class of context variable in for statement:</p>
 <pre><code>class IterateContext{
   isFirst()
