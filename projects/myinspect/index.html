@@ -25,7 +25,12 @@
 
     <div class="container">
       <section id="main_content">
-        <h1>Overview</h1><p>Myinspect is a sql inspector for projects using mybatis.</p><h1>Usage</h1><p>NOTE:The inspector only works in projects building with gradle.</p><p>1.add the follow code to your <code>gradle.build</code> file:</p>
+        <h1>Overview</h1>
+<p>Myinspect is a sql inspector for projects using mybatis.</p>
+<h1>Usage</h1>
+<p>NOTE:The inspector only works in projects building with gradle.</p>
+<p>1.add one of the follow code to your <code>gradle.build</code> file:</p>
+<p>Example1:</p>
 <pre><code>//specify your database driver class
 System.setProperty(&quot;myinspect.db.driver&quot;,&quot;com.mysql.cj.jdbc.Driver&quot;);
 //specify your database configuration file.only support properties file.
@@ -38,7 +43,21 @@ System.setProperty(&quot;myinspect.db.config.password-key&quot;,&quot;datasource
 dependencies{
   compileOnly &#39;site.kason:myinspect:VERSION&#39;
 }
-</code></pre><p>2.The inspector runs when you execute <code>gradle build</code> or any tasks which depends on task<code>compileJava</code>.</p><h2>output example</h2>
+</code></pre>
+<p>Example2:</p>
+<pre><code>//specify your database driver class
+System.setProperty(&quot;myinspect.db.driver&quot;,&quot;com.mysql.cj.jdbc.Driver&quot;);
+//specify the data source,including url,user and database
+System.setProperty(&quot;myinspect.db.url&quot;,&quot;jdbc:mysql://localhost/YOURDATABASE&quot;);
+System.setProperty(&quot;myinspect.db.user&quot;,&quot;root&quot;);
+System.setProperty(&quot;myinspect.db.password&quot;,&quot;YOURPASSWORD&quot;);
+//add myinspect dependency
+dependencies{
+  compileOnly &#39;site.kason:myinspect:VERSION&#39;
+}
+</code></pre>
+<p>2.The inspector runs when you execute <code>gradle build</code> or any tasks which depends on task<code>compileJava</code>.</p>
+<h2>output example</h2>
 <pre><code>&gt; Task :jsm-business:compileJava
 myinspect:Using inspect Analyzers:[SyntaxAnalyzer]
 
