@@ -25,49 +25,69 @@
 
     <div class="container">
       <section id="main_content">
-        <h1>Overview</h1><p>Tempera is a high-performance and type-safe template engine for java. </p><h1>Performance</h1><p>The performance test could be found here:<a href="https://github.com/kasonyang/template-benchmark">https://github.com/kasonyang/template-benchmark</a></p><p><img src="https://github.com/kasonyang/template-benchmark/raw/master/results.png" alt="performance""/></p><h1>Installation</h1><p><img src="https://img.shields.io/maven-central/v/site.kason/tempera.svg" alt="Maven Central""/></p><p>gradle</p>
-<pre><code>compile &#39;site.kason:tempera:VERSION&#39;
-</code></pre><h1>Get started</h1><p>compile template from string:</p>
+        <h1>Overview</h1>
+<p>Tempera is a high-performance and type-safe template engine for java. </p>
+<h1>Performance</h1>
+<p>The performance test could be found here:<a href="https://github.com/kasonyang/template-benchmark">https://github.com/kasonyang/template-benchmark</a></p>
+<p><img src="https://github.com/kasonyang/template-benchmark/raw/master/results.png" alt="performance" /></p>
+<h1>Installation</h1>
+<p><img src="https://img.shields.io/maven-central/v/site.kason/tempera.svg" alt="Maven Central" /></p>
+<p>gradle</p>
+<pre><code>compile &quot;site.kason:tempera:$VERSION&quot;
+</code></pre>
+<h1>Get started</h1>
+<p>compile template from string:</p>
 <pre><code>Engine engine = new Engine();
-Template tpl = engine.compileInline(&quot;{{var name:String}}hello,{{name}}!&quot;, &quot;hello.template&quot;, null);
+Template tpl = engine.compileInline(&quot;{{var name:String}}hello,{{name}}!&quot;, &quot;hello&quot;);
 String result = tpl.render(Collections.singletonMap(&quot;name&quot;, &quot;world&quot;));
 assertEquals(&quot;hello,world!&quot;, result);
-</code></pre><p>compile template from resource:</p>
+</code></pre>
+<p>compile template from resource:</p>
 <pre><code>Engine engine = new Engine();
-Template tpl = engine.compile(&quot;templates.main&quot;);//compile template from resource:/templates/main.tplx
+Template tpl = engine.compile(&quot;templates/main.tpr&quot;);//compile template from resource:/templates/main.tpr
 tpl.render(Collections.singletonMap(&quot;names&quot;, list),new StringWriter());
-</code></pre><p>compile template from file system:</p>
+</code></pre>
+<p>compile template from file system:</p>
 <pre><code>Configuration conf = new Configuration(Configuration.DEFAULT);
 conf.setTemplateLoader(new FileTemplateLoader(&quot;.&quot;));
-Template tpl = engine.compile(&quot;templates.main&quot;);//compile template from file: ./templates/main.tplx
+Template tpl = engine.compile(&quot;templates/main.tpr&quot;);//compile template from file: ./templates/main.tpr
 tpl.render(Collections.singletonMap(&quot;names&quot;, list),new StringWriter());
-</code></pre><h1>Declaring variables</h1><p>Variables should be declared at the beginning of template.</p>
+</code></pre>
+<h1>Declaring variables</h1>
+<p>Variables should be declared at the beginning of template.</p>
 <pre><code>{{var name:String}}
 {{var user:User}}
-</code></pre><h1>Output variable</h1>
+</code></pre>
+<h1>Output variable</h1>
 <pre><code>Hello,my name is {{name}}.
 Hello,my name is {{user.name}}.
-</code></pre><p>The variable<code>{{user.name}}</code> will attempt the following techniques to access the<code>name</code> attribute of the <code>user</code> variable:</p>
+</code></pre>
+<p>The variable<code>{{user.name}}</code> will attempt the following techniques to access the<code>name</code> attribute of the <code>user</code> variable:</p>
 <ul>
   <li>user.name</li>
   <li>user.getName()</li>
   <li>user.isName()</li>
-</ul><h1>Operators</h1>
+</ul>
+<h1>Operators</h1>
 <pre><code>== , != , &lt; , &gt; , &lt;= , &gt;=
 &amp;&amp; , || , !
 +  , -  , * , / , %
 ?: 
-</code></pre><h1>Control structures</h1><h2>If</h2>
+</code></pre>
+<h1>Control structures</h1>
+<h2>If</h2>
 <pre><code>{{if EXPR}}
 ...
 {{else}}
 ...
 {{/if}}
-</code></pre><h2>For</h2>
+</code></pre>
+<h2>For</h2>
 <pre><code>{{for i in list}}
 ...
 {{/for}}
-</code></pre><p>or</p>
+</code></pre>
+<p>or</p>
 <pre><code>{{for i,ctx in list}}
 ...
 index:{{ctx.index}}
@@ -75,41 +95,133 @@ isFirst:{{ctx.isFirst}}
 isLast:{{ctx.isLast}}
 ...
 {{/for}}
-</code></pre><h1>Inheritance</h1><p>Template <code>parent</code>:</p>
+</code></pre>
+<h1>Inheritance</h1>
+<p>Template <code>parent</code>:</p>
 <pre><code>&lt;html&gt;
 &lt;body&gt;
 {{placeholder body}}Here is the default content of body.{{/placeholder}}
 &lt;/body&gt;
 &lt;/html&gt;
-</code></pre><p>Template <code>child</code>:</p>
+</code></pre>
+<p>Template <code>child</code>:</p>
 <pre><code>{{layout parent}}
 {{replace body}}Here is the new content of body.{{/body}}
 {{/layout}}
-</code></pre><p>The output of <code>child</code> will be(refomatted):</p>
+</code></pre>
+<p>The output of <code>child</code> will be(refomatted):</p>
 <pre><code>&lt;html&gt;
 &lt;body&gt;
 Here is the new content of body.
 &lt;/body&gt;
 &lt;/html&gt;
-</code></pre><h1>Comments</h1>
+</code></pre>
+<h1>Comments</h1>
 <pre><code>{{* 
 Here is comment.
 The content would be ignored.
  *}}
-</code></pre><h1>Filters</h1><p>Using filters in template:</p>
+</code></pre>
+<h1>Filters</h1>
+<p>Using filters in template:</p>
 <pre><code>{{name|upper}}
-</code></pre><p>Specify the default filter:</p>
+</code></pre>
+<p>Specify the default filter:</p>
 <pre><code>Configuration conf = new Configuration(Configuration.DEFAULT);
 conf.setDefaultFilter(&quot;html&quot;);
-</code></pre><p>Register custom filters:</p>
+</code></pre>
+<p>Build-in filters in <code>Configuration.DEFAULT</code>:</p>
+<ol>
+  <li>lower</li>
+  <li>upper</li>
+</ol>
+<p>Register custom filters:</p>
 <pre><code>Configuration conf = new Configuration(Configuration.DEFAULT);
 conf.registerFilter(&quot;html&quot;, new HtmlFilter());
-</code></pre><h1>Functions</h1><p>Using functions in template:</p>
+</code></pre>
+<h1>Functions</h1>
+<p>Using functions in template:</p>
 <pre><code>{{length(name)}}
-</code></pre><p>Register custom functions:</p>
+</code></pre>
+<p>Register custom functions:</p>
 <pre><code>Configuration conf = new Configuration(Configuration.DEFAULT);
 conf.registerFunction(&quot;XXX&quot;, new XXXFunction());
-</code></pre><h1>Miscellaneous</h1><p>The class of context variable in for statement:</p>
+</code></pre>
+<p>Build-in functions in <code>Configuration.DEFAULT</code></p>
+<ol>
+  <li>format (String format,Object... arguments) - format values using <code>String.format</code></li>
+  <li>left (Object str,Number count)</li>
+  <li>right (Object str,Number count)</li>
+</ol>
+<h1>Spring integration</h1>
+<p>Implements ViewResolver:</p>
+<pre><code>public class TemperaView implements View {
+
+  private final Template template;
+
+  public TemperaView(Template template) {
+    this.template = template;
+  }
+
+  @Override
+  public String getContentType() {
+    return null;
+  }
+
+  @Override
+  public void render(Map&lt;String, ?&gt; model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    Map&lt;String, Object&gt; data = new HashMap(model);
+    template.render(data, response.getWriter());
+  }
+
+}
+
+public class TemperaViewResolver implements ViewResolver {
+
+  private final Engine engine;
+
+  public TemperaViewResolver(Engine engine) {
+    this.engine = engine;
+  }
+
+  private final Map&lt;Template, TemperaView&gt; views = new ConcurrentHashMap();
+
+  @Override
+  public View resolveViewName(String viewName, Locale locale) throws Exception {
+    Template tpl = engine.compile(viewName);
+    TemperaView view = views.get(tpl);
+    if (view == null) {
+      synchronized (views) {
+        view = views.get(tpl);
+        if (view == null) {
+          view = new TemperaView(tpl);
+          views.put(tpl, view);
+        }
+      }
+    }
+    return view;
+  }
+
+}
+</code></pre>
+<p>Create <code>viewResolver</code> bean in your <code>Application</code> class:</p>
+<pre><code>@SpringBootApplication
+public class Application extends SpringBootServletInitializer {
+
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
+
+  @Bean
+  public ViewResolver viewResolver() {
+    TemperaViewResolver vr = new TemperaViewResolver(new Engine());
+    return vr;
+  }
+
+}
+</code></pre>
+<h1>Miscellaneous</h1>
+<p>The class of context variable in for statement:</p>
 <pre><code>class IterateContext{
   isFirst()
   isLast()
